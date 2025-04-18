@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Track Location</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <h1>Live Location</h1>
+    <div id="locationInfo">
+        <p>Fetching live location...</p>
+    </div>
+
+    <script>
+        // Extract phone number and ID from URL parameters
+        const params = new URLSearchParams(window.location.search);
+        const phoneNumber = params.get('phone');
+        const uniqueId = params.get('id');
+
+        // Display live location using the Geolocation API
+        const locationInfo = document.getElementById('locationInfo');
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                const { latitude, longitude } = position.coords;
+                locationInfo.innerHTML = `
+                    <p><strong>Phone Number:</strong> ${phoneNumber}</p>
+                    <p><strong>Unique ID:</strong> ${uniqueId}</p>
+                    <p><strong>Latitude:</strong> ${latitude}</p>
+                    <p><strong>Longitude:</strong> ${longitude}</p>
+                `;
+            },
+            (error) => {
+                locationInfo.innerHTML = `<p>Error: Unable to fetch location. Please enable location permissions.</p>`;
+            }
+        );
+    </script>
+</body>
+</html>
